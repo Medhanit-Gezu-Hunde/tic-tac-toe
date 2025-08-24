@@ -1,0 +1,119 @@
+:root {
+  --bg: #0f1220;
+--panel: #171a2b;
+--text: #e8ecff;
+--muted: #aab0d4;
+--accent: #7c5cff;
+--accent-2: #00d4ff;
+--danger: #ff5678;
+--success: #48e6a4;
+--shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+margin: 0;
+font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+color: var(--text);
+background: radial-gradient(1200px 1200px at 10% 10%, #151936 0%, #0f1220 50%, #0c0e1a 100%);
+}
+.container {
+max-width: 980px;
+margin: 0 auto;
+padding: 24px;
+display: grid;
+gap: 18px;
+}
+.app-header { text-align: center; }
+.app-header h1 { margin: 8px 0 4px; font-weight: 800; letter-spacing: .3px; }
+.app-header .accent { color: var(--accent-2); }
+.tagline { margin: 0; color: var(--muted); }
+
+.panel {
+background: linear-gradient(180deg, var(--panel), #121527);
+border: 1px solid #23284a;
+border-radius: 18px;
+padding: 18px;
+box-shadow: var(--shadow);
+}
+
+
+
+.mode-toggle { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.name-form .fields {
+display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; align-items: end;
+}
+.name-form label { display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
+.name-form input {
+padding: 10px 12px; border-radius: 12px; background: #0e1122; color: var(--text);
+border: 1px solid #262b4d; outline: none; transition: border .2s, box-shadow .2s;
+}
+.name-form input:focus { border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(0,212,255,.15); }
+
+
+.btn {
+appearance: none; border: 1px solid #2a2f55; background: #11152a; color: var(--text);
+padding: 10px 14px; border-radius: 14px; cursor: pointer; font-weight: 700; letter-spacing: .2px;
+transition: transform .06s ease, background .2s ease, border .2s;
+}
+.btn:hover { transform: translateY(-1px); background: #151a36; }
+.btn[aria-pressed="true"], .btn.primary { background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-color: transparent; }
+.btn.danger { background: linear-gradient(90deg, #ff5b87, #ff7e5f); border-color: transparent; }
+
+
+.scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.score { background: #0d1123; border: 1px solid #242a4e; border-radius: 16px; padding: 14px; text-align: center; }
+.score .label { display: block; color: var(--muted); margin-bottom: 6px; font-size: 13px; }
+.score strong { font-size: 28px; letter-spacing: .5px; }  
+.score strong { font-size: 28px; letter-spacing: .5px; }
+
+
+
+.board-panel { position: relative; }
+.board {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+max-width: 520px;
+margin: 8px auto 12px;
+}
+.cell {
+aspect-ratio: 1 / 1;
+width: 100%;
+border-radius: 18px;
+border: 1px solid #2a2f55;
+background: linear-gradient(180deg, #0f1327, #0a0d1b);
+color: var(--text);
+font-size: clamp(32px, 8vw, 56px);
+font-weight: 900;
+text-shadow: 0 6px 24px rgba(124,92,255,.35);
+box-shadow: var(--shadow);
+cursor: pointer;
+transition: transform .08s ease, box-shadow .2s ease, border .2s;
+}
+.cell:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,.35); }
+.cell.filled { cursor: not-allowed; opacity: .9; }
+.cell.win { border-color: var(--success); box-shadow: 0 0 0 3px rgba(72,230,164,.25); animation: glow 1.2s ease infinite alternate; }
+.cell.invalid { animation: shake .25s linear; }
+
+
+@keyframes glow { from { text-shadow: 0 6px 24px rgba(72,230,164,.1);} to { text-shadow: 0 8px 32px rgba(72,230,164,.55);} }
+@keyframes shake { 10%, 90%{ transform: translateX(-1px);} 20%, 80%{ transform: translateX(2px);} 30%, 50%, 70%{ transform: translateX(-4px);} 40%, 60%{ transform: translateX(4px);} }
+
+
+.status { text-align: center; color: var(--muted); min-height: 24px; }
+
+
+
+.control-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+
+/* Responsive */
+@media (max-width: 720px){
+.name-form .fields { grid-template-columns: 1fr; }
+.scores { grid-template-columns: 1fr; }
+}
+
+
+/* Utility */
+.hidden { display: none !important; }

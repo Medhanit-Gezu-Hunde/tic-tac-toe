@@ -1,0 +1,70 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tic Tac Toe – Solo or Duo!</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<main class="container">
+<header class="app-header">
+<h1>🎮 Tic Tac Toe – <span class="accent">Solo</span> or <span class="accent">Duo</span>!</h1>
+
+</header>
+
+
+<!-- Mode & Names -->
+<section class="panel setup" aria-labelledby="setup-heading">
+<h2 id="setup-heading">Setup</h2>
+<div class="mode-toggle" role="group" aria-label="Game mode selector">
+<button id="singlePlayerBtn" class="btn" aria-pressed="false">Single Player</button>
+<button id="twoPlayerBtn" class="btn" aria-pressed="false">Two Player</button>
+</div>
+
+
+<form id="nameForm" class="name-form" autocomplete="off">
+<div class="fields">
+<label>
+Player X Name
+<input id="playerXInput" name="playerX" type="text" placeholder="e.g., Alex" maxlength="20" />
+</label>
+<label data-mode="two">
+Player O Name
+<input id="playerOInput" name="playerO" type="text" placeholder="e.g., Sam" maxlength="20" />
+</label>
+</div>
+<button id="startBtn" class="btn primary" type="submit">Start Round</button>
+</form>
+</section>
+
+
+<!-- Scoreboard -->
+<section class="panel scoreboard" aria-labelledby="score-heading">
+<h2 id="score-heading">Scoreboard</h2>
+<div class="scores">
+<div class="score">
+<span class="label" id="labelX">Player X</span>
+<strong id="scoreX">0</strong>
+</div>
+<div class="score">
+<span class="label" id="labelO">Player O</span>
+<strong id="scoreO">0</strong>
+</div>
+<div class="score">
+<span class="label">Draws</span>
+<strong id="scoreD">0</strong>
+</div>
+</div>
+</section>
+
+
+<!-- Board -->
+<section class="panel board-panel" aria-labelledby="board-heading">
+<h2 id="board-heading">Board</h2>
+<div id="board" class="board" role="grid" aria-label="Tic Tac Toe board">
+<!-- 9 cells -->
+<button class="cell" data-index="0" role="gridcell" aria-label="Cell 1"></button>
+<button class="cell" data-index="1" role="gridcell" aria-label="Cell 2"></button>
+<button class="cell" data-index="2" role="gridcell" aria-label="Cell 3"></button>
+<button class="cell" data-index="3" role="gridcell" aria-label="Cell 4"></button>
+<button class="cell" data-index="4" role="gridcell" aria-label="Cell 5"></button>
