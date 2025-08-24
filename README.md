@@ -1,3 +1,3 @@
-Tic_Tac_Toe
+        Tic Tac Toe – Solo or Duo!
 
-an animated and responsive game wedbsite using HTML,CSS andd Javascript
+ An Interactive, Animated, and Responsive Game Website (HTML + CSS + JS)
