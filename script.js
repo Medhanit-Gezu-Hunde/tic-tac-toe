@@ -2,12 +2,8 @@
 const boardEl = document.getElementById("board");
 const cells = document.querySelectorAll(".cell");
 
-const singlePlayerBtn = document.getElementById("singlePlayerBtn");
-const twoPlayerBtn = document.getElementById("twoPlayerBtn");
-const nameForm = document.getElementById("nameForm");
-
 const playerXInput = document.getElementById("playerXInput");
-const playerOInput = document.getElementById("playerOInput");
+const startBtn = document.getElementById("startBtn");
 
 const labelX = document.getElementById("labelX");
 const labelO = document.getElementById("labelO");
@@ -16,15 +12,12 @@ const scoreXEl = document.getElementById("scoreX");
 const scoreOEl = document.getElementById("scoreO");
 const scoreDEl = document.getElementById("scoreD");
 
-const startBtn = document.getElementById("startBtn");
-
 // ====== Game State ======
 let board = Array(9).fill(null);
 let currentPlayer = "X";
 let scores = { X: 0, O: 0, D: 0 };
-let singlePlayerMode = false;
 let playerXName = "Player X";
-let playerOName = "Player O";
+let playerOName = "Computer";
 let gameActive = false;
 
 // ====== Winning Combinations ======
@@ -34,26 +27,10 @@ const winPatterns = [
   [0,4,8], [2,4,6]           // diagonals
 ];
 
-// ====== Mode Selection ======
-singlePlayerBtn.addEventListener("click", () => {
-  singlePlayerMode = true;
-  singlePlayerBtn.setAttribute("aria-pressed", "true");
-  twoPlayerBtn.setAttribute("aria-pressed", "false");
-  playerOInput.parentElement.style.display = "none";
-});
-
-twoPlayerBtn.addEventListener("click", () => {
-  singlePlayerMode = false;
-  twoPlayerBtn.setAttribute("aria-pressed", "true");
-  singlePlayerBtn.setAttribute("aria-pressed", "false");
-  playerOInput.parentElement.style.display = "block";
-});
-
 // ====== Start Game ======
-nameForm.addEventListener("submit", (e) => {
+startBtn.addEventListener("click", (e) => {
   e.preventDefault();
   playerXName = playerXInput.value.trim() || "Player X";
-  playerOName = singlePlayerMode ? "Computer" : (playerOInput.value.trim() || "Player O");
 
   labelX.textContent = playerXName;
   labelO.textContent = playerOName;
@@ -62,12 +39,12 @@ nameForm.addEventListener("submit", (e) => {
   gameActive = true;
 });
 
-// ====== Handle Move ======
+// ====== Handle Player Move ======
 function handleCellClick(e) {
   const index = e.target.dataset.index;
   if (!gameActive || board[index]) return;
 
-  makeMove(index, currentPlayer);
+  makeMove(index, "X");
 
   if (checkWinner()) return;
   if (board.every(cell => cell)) {
@@ -75,13 +52,8 @@ function handleCellClick(e) {
     return;
   }
 
-  // Switch player
-  currentPlayer = currentPlayer === "X" ? "O" : "X";
-
-  // Computer move
-  if (singlePlayerMode && currentPlayer === "O") {
-    setTimeout(computerMove, 400);
-  }
+  currentPlayer = "O";
+  setTimeout(computerMove, 400);
 }
 
 function makeMove(index, player) {
@@ -90,14 +62,10 @@ function makeMove(index, player) {
   cells[index].classList.add(player);
 }
 
-// ====== Computer AI (Easy Random) ======
+// ====== Computer AI (Unbeatable) ======
 function computerMove() {
-  const emptyCells = board
-    .map((val, i) => (val === null ? i : null))
-    .filter(i => i !== null);
-
-  const choice = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-  makeMove(choice, "O");
+  const bestMove = minimax(board, "O").index;
+  makeMove(bestMove, "O");
 
   if (checkWinner()) return;
   if (board.every(cell => cell)) {
@@ -106,6 +74,63 @@ function computerMove() {
   }
 
   currentPlayer = "X";
+}
+
+// ====== Minimax Algorithm ======
+function minimax(newBoard, player) {
+  const availSpots = newBoard
+    .map((val, i) => (val === null ? i : null))
+    .filter(i => i !== null);
+
+  // Terminal states
+  if (checkWin(newBoard, "X")) return { score: -10 };
+  if (checkWin(newBoard, "O")) return { score: 10 };
+  if (availSpots.length === 0) return { score: 0 };
+
+  const moves = [];
+
+  for (let i = 0; i < availSpots.length; i++) {
+    const move = {};
+    move.index = availSpots[i];
+    newBoard[availSpots[i]] = player;
+
+    if (player === "O") {
+      const result = minimax(newBoard, "X");
+      move.score = result.score;
+    } else {
+      const result = minimax(newBoard, "O");
+      move.score = result.score;
+    }
+
+    newBoard[availSpots[i]] = null;
+    moves.push(move);
+  }
+
+  let bestMove;
+  if (player === "O") {
+    let bestScore = -Infinity;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score > bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  } else {
+    let bestScore = Infinity;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score < bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  }
+
+  return moves[bestMove];
+}
+
+// ====== Helper for Minimax ======
+function checkWin(boardState, player) {
+  return winPatterns.some(pattern => pattern.every(i => boardState[i] === player));
 }
 
 // ====== Check Winner ======
