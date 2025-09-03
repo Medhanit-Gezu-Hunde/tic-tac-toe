@@ -30,6 +30,8 @@ const winPatterns = [
 // ====== Start Game ======
 startBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  boardEl.scrollIntoView();
+
   playerXName = playerXInput.value.trim() || "Player X";
 
   labelX.textContent = playerXName;

@@ -82,7 +82,7 @@ aspect-ratio: 1 / 1;
 width: 100%;
 border-radius: 18px;
 border: 1px solid #2a2f55;
-background: linear-gradient(180deg, #0f1327, #0a0d1b);
+background: linear-gradient(180deg, #5e71d1, #5cabbb);
 color: var(--text);
 font-size: clamp(32px, 8vw, 56px);
 font-weight: 900;
