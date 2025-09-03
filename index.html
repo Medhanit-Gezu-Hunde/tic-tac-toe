@@ -8,55 +8,55 @@
 <body>
 <main class="container">
 <header class="app-header">
-<h1>🎮 Tic Tac Toe – <span class="accent">Solo</span> or <span class="accent">Duo</span>!</h1>
-
+  <h1>🎮 Tic Tac Toe – <span class="accent">Solo</span> or <span class="accent">Duo</span>!</h1>
 </header>
 
-
-<!-- Mode & Names -->
+<!-- Setup -->
 <section class="panel setup" aria-labelledby="setup-heading">
-<h2 id="setup-heading">Setup</h2>
-<div class="mode-toggle" role="group" aria-label="Game mode selector">
-<button id="singlePlayerBtn" class="btn" aria-pressed="false">Single Player</button>
-<button id="twoPlayerBtn" class="btn" aria-pressed="false">Two Player</button>
-</div>
+  <h2 id="setup-heading">Setup</h2>
 
+  <form id="nameForm" class="name-form" autocomplete="off">
+    <div class="fields">
+      <label>
+        Your Name
+        <input id="playerNameInput" name="playerName" type="text" placeholder="e.g., Alex" maxlength="20" />
+      </label>
 
-<form id="nameForm" class="name-form" autocomplete="off">
-<div class="fields">
-<label>
-Player X Name
-<input id="playerXInput" name="playerX" type="text" placeholder="e.g., Alex" maxlength="20" />
-</label>
-<label data-mode="two">
-Player O Name
-<input id="playerOInput" name="playerO" type="text" placeholder="e.g., Sam" maxlength="20" />
-</label>
-</div>
-<button id="startBtn" class="btn primary" type="submit">Start Round</button>
-</form>
+      <fieldset class="symbol-select">
+        <legend>Choose your symbol</legend>
+        <label>
+          <input type="radio" name="symbol" value="X" checked />
+          X
+        </label>
+        <label>
+          <input type="radio" name="symbol" value="O" />
+          O
+        </label>
+      </fieldset>
+    </div>
+
+    <button id="startBtn" class="btn primary" type="submit">Start Round</button>
+  </form>
 </section>
-
 
 <!-- Scoreboard -->
 <section class="panel scoreboard" aria-labelledby="score-heading">
-<h2 id="score-heading">Scoreboard</h2>
-<div class="scores">
-<div class="score">
-<span class="label" id="labelX">Player X</span>
-<strong id="scoreX">0</strong>
-</div>
-<div class="score">
-<span class="label" id="labelO">Player O</span>
-<strong id="scoreO">0</strong>
-</div>
-<div class="score">
-<span class="label">Draws</span>
-<strong id="scoreD">0</strong>
-</div>
-</div>
+  <h2 id="score-heading">Scoreboard</h2>
+  <div class="scores">
+    <div class="score">
+      <span class="label" id="labelX">Player X</span>
+      <strong id="scoreX">0</strong>
+    </div>
+    <div class="score">
+      <span class="label" id="labelO">Player O</span>
+      <strong id="scoreO">0</strong>
+    </div>
+    <div class="score">
+      <span class="label">Draws</span>
+      <strong id="scoreD">0</strong>
+    </div>
+  </div>
 </section>
-
 
 <!-- Board -->
 <section class="panel board-panel" aria-labelledby="board-heading">
@@ -75,3 +75,6 @@ Player O Name
 </section>
 
 <script src="script.js" defer></script>
+</main>
+</body>
+</html>

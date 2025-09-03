@@ -2,7 +2,7 @@
 const boardEl = document.getElementById("board");
 const cells = document.querySelectorAll(".cell");
 
-const playerXInput = document.getElementById("playerXInput");
+const playerNameInput = document.getElementById("playerNameInput");
 const startBtn = document.getElementById("startBtn");
 
 const labelX = document.getElementById("labelX");
@@ -16,8 +16,9 @@ const scoreDEl = document.getElementById("scoreD");
 let board = Array(9).fill(null);
 let currentPlayer = "X";
 let scores = { X: 0, O: 0, D: 0 };
-let playerXName = "Player X";
-let playerOName = "Computer";
+let playerName = "Player";
+let playerSymbol = "X";
+let computerSymbol = "O";
 let gameActive = false;
 
 // ====== Winning Combinations ======
@@ -32,13 +33,31 @@ startBtn.addEventListener("click", (e) => {
   e.preventDefault();
   boardEl.scrollIntoView();
 
-  playerXName = playerXInput.value.trim() || "Player X";
+  // Get player name
+  playerName = playerNameInput.value.trim() || "Player";
 
-  labelX.textContent = playerXName;
-  labelO.textContent = playerOName;
+  // Get selected symbol
+  const selectedSymbol = document.querySelector('input[name="symbol"]:checked').value;
+
+  if (selectedSymbol === "X") {
+    playerSymbol = "X";
+    computerSymbol = "O";
+  } else {
+    playerSymbol = "O";
+    computerSymbol = "X";
+  }
+
+  // Update labels
+  labelX.textContent = (playerSymbol === "X") ? playerName : "Computer";
+  labelO.textContent = (playerSymbol === "O") ? playerName : "Computer";
 
   resetBoard();
   gameActive = true;
+
+  // If player chose O → computer starts
+  if (playerSymbol === "O") {
+    setTimeout(computerMove, 500);
+  }
 });
 
 // ====== Handle Player Move ======
@@ -46,7 +65,7 @@ function handleCellClick(e) {
   const index = e.target.dataset.index;
   if (!gameActive || board[index]) return;
 
-  makeMove(index, "X");
+  makeMove(index, playerSymbol);
 
   if (checkWinner()) return;
   if (board.every(cell => cell)) {
@@ -54,7 +73,7 @@ function handleCellClick(e) {
     return;
   }
 
-  currentPlayer = "O";
+  currentPlayer = computerSymbol;
   setTimeout(computerMove, 400);
 }
 
@@ -66,8 +85,8 @@ function makeMove(index, player) {
 
 // ====== Computer AI (Unbeatable) ======
 function computerMove() {
-  const bestMove = minimax(board, "O").index;
-  makeMove(bestMove, "O");
+  const bestMove = minimax(board, computerSymbol).index;
+  makeMove(bestMove, computerSymbol);
 
   if (checkWinner()) return;
   if (board.every(cell => cell)) {
@@ -75,7 +94,7 @@ function computerMove() {
     return;
   }
 
-  currentPlayer = "X";
+  currentPlayer = playerSymbol;
 }
 
 // ====== Minimax Algorithm ======
@@ -85,8 +104,8 @@ function minimax(newBoard, player) {
     .filter(i => i !== null);
 
   // Terminal states
-  if (checkWin(newBoard, "X")) return { score: -10 };
-  if (checkWin(newBoard, "O")) return { score: 10 };
+  if (checkWin(newBoard, playerSymbol)) return { score: -10 };
+  if (checkWin(newBoard, computerSymbol)) return { score: 10 };
   if (availSpots.length === 0) return { score: 0 };
 
   const moves = [];
@@ -96,11 +115,11 @@ function minimax(newBoard, player) {
     move.index = availSpots[i];
     newBoard[availSpots[i]] = player;
 
-    if (player === "O") {
-      const result = minimax(newBoard, "X");
+    if (player === computerSymbol) {
+      const result = minimax(newBoard, playerSymbol);
       move.score = result.score;
     } else {
-      const result = minimax(newBoard, "O");
+      const result = minimax(newBoard, computerSymbol);
       move.score = result.score;
     }
 
@@ -109,7 +128,7 @@ function minimax(newBoard, player) {
   }
 
   let bestMove;
-  if (player === "O") {
+  if (player === computerSymbol) {
     let bestScore = -Infinity;
     for (let i = 0; i < moves.length; i++) {
       if (moves[i].score > bestScore) {
@@ -159,7 +178,9 @@ function endRound(winner) {
     scores[winner]++;
     if (winner === "X") scoreXEl.textContent = scores.X;
     else scoreOEl.textContent = scores.O;
-    alert(`${winner === "X" ? playerXName : playerOName} wins!`);
+
+    const winnerName = (winner === playerSymbol) ? playerName : "Computer";
+    alert(`${winnerName} wins!`);
   }
 
   setTimeout(resetBoard, 1000);
